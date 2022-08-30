@@ -16,17 +16,11 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Notes', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'isLoggedIn' => auth()->check(),
-        'name'  => "Mehdi"
-    ]);
-})->name("Home");
-Route::post('logout', [LoginController::class, 'logout']) -> name('logout');
-
+Route::get('/', [NoteController::class, 'index'])->name("Home");
 Route::post('/', [NoteController::class, 'create'])->name('notes.create')->middleware('auth');
+Route::put('/{note}', [NoteController::class, 'update'])->name('notes.update')->middleware('auth');
+
+Route::post('logout', [LoginController::class, 'logout']) -> name('logout');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
